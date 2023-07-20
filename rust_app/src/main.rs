@@ -21,6 +21,13 @@ struct Response {
     body: String,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+struct Account {
+    account_id: u16,
+    account_name: String,
+    password: String,
+}
+
 /// This is the main body for the function.
 /// Write your code inside it.
 /// There are some code example in the following URLs:
