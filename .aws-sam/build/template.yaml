@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'dynamo-db-rust
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+Resources:
+  DynamoDBFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
+      SamResourceId: DynamoDBFunction
+    Properties:
+      CodeUri: ../cache/62b5e752-d516-4540-b33f-e03dd86d3d91
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures:
+      - x86_64
+      Events:
+        AddAccount:
+          Type: Api
+          Properties:
+            Path: /addaccount
+            Method: post
+Outputs:
+  DynamoDBApi:
+    Description: API Gateway endpoint URL for Prod stage for DynamoDB function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/addaccount/
+  DynamoDBFunction:
+    Description: DynamoDB Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - DynamoDBFunction
+      - Arn
+  DynamoDBFunctionIamRole:
+    Description: Implicit IAM Role created for DynamoDB Function
+    Value:
+      Fn::GetAtt:
+      - DynamoDBFunctionRole
+      - Arn
